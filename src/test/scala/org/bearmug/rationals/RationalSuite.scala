@@ -33,4 +33,14 @@ class RationalSuite extends FunSuite {
     assert((Rational(3, 2) * Rational(7, 5)).toString == Rational(21, 10).toString)
     assert(RationalJ.rational(3, 2).multiply(RationalJ.rational(7, 5)).toString == RationalJ.rational(21, 10).toString)
   }
+
+  test("new rationals not simplified") {
+    assert(Rational(6, 4).toString == "6/4")
+    assert(RationalJ.rational(6, 4).toString == "6/4")
+  }
+
+  ignore("multiplication output simplified") {
+    assert((Rational(2, 4) * Rational(4, 10)).toString == "1/5")
+    assert(RationalJ.rational(2, 4).multiply(RationalJ.rational(4, 10)).toString == RationalJ.rational(1, 5).toString)
+  }
 }
