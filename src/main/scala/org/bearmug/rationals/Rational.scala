@@ -5,6 +5,7 @@ package org.bearmug.rationals
  */
 class Rational(n: Int, d: Int) {
   override def toString: String = s"$n/$d"
+  def unary_- = Rational(-n, d)
 }
 
 object Rational {

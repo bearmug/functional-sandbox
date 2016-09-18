@@ -14,4 +14,9 @@ public class RationalImpl implements RationalJ {
     public String toString() {
         return n + "/" + d;
     }
+
+    @Override
+    public RationalJ negate() {
+        return new RationalImpl(-n, d);
+    }
 }

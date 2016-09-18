@@ -11,4 +11,6 @@ public interface RationalJ {
     static RationalJ rational(int n) {
         return new RationalImpl(n, 1);
     }
+
+    RationalJ negate();
 }
