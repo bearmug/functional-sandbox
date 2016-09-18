@@ -1,3 +1,5 @@
+package org.bearmug.rationals
+
 /**
  * Functional rational numbers implementation. Inspired by 'Programming in Scala' book.
  */
