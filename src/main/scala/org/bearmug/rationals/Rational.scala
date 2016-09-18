@@ -10,6 +10,7 @@ class Rational(n: Int, d: Int) {
   override def toString: String = s"$n/$d"
   def unary_- = Rational(-n, d)
   def *(o: Rational) = Rational(n * o.number, d * o.denominator)
+  def /(o: Rational) = Rational(n * o.denominator, d * o.number)
 }
 
 object Rational {

@@ -30,4 +30,8 @@ public class RationalJ {
     public RationalJ multiply(RationalJ other) {
         return RationalJ.rational(number * other.number, denominator * other.denominator);
     }
+
+    public RationalJ divide(RationalJ other) {
+        return RationalJ.rational(number * other.denominator, denominator * other.number);
+    }
 }
