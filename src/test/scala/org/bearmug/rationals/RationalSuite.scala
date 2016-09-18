@@ -26,6 +26,11 @@ class RationalSuite extends FunSuite {
 
   test("negation works fine and concise") {
     assert((-Rational(10, 7)).toString == "-10/7")
-    assert(RationalJ.rational(10, 7).negate().toString == "-10/7")
+    assert(RationalJ.rational(10, 7).negateUnary().toString == "-10/7")
+  }
+
+  test("multiplication works as expected") {
+    assert((Rational(3, 2) * Rational(7, 5)).toString == Rational(21, 10).toString)
+    assert(RationalJ.rational(3, 2).multiply(RationalJ.rational(7, 5)).toString == RationalJ.rational(21, 10).toString)
   }
 }

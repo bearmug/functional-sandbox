@@ -1,16 +1,33 @@
 package org.bearmug.rationals;
 
-/**
- * Class to compare rationals implementation for Scala and Java.
- */
-public interface RationalJ {
-    static RationalJ rational(int n, int d) {
-        return new RationalImpl(n, d);
+public class RationalJ {
+
+    private final int number;
+    private final int denominator;
+
+    public static RationalJ rational(int number, int denominator) {
+        return new RationalJ(number, denominator);
     }
 
-    static RationalJ rational(int n) {
-        return new RationalImpl(n, 1);
+    public static RationalJ rational(int number) {
+        return new RationalJ(number, 1);
     }
 
-    RationalJ negate();
+    private RationalJ(int number, int denominator) {
+        this.number = number;
+        this.denominator = denominator;
+    }
+
+    @Override
+    public String toString() {
+        return number + "/" + denominator;
+    }
+
+    public RationalJ negateUnary() {
+        return new RationalJ(-number, denominator);
+    }
+
+    public RationalJ multiply(RationalJ other) {
+        return RationalJ.rational(number * other.number, denominator * other.denominator);
+    }
 }
