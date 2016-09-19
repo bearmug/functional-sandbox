@@ -102,11 +102,15 @@ class RationalSuite extends FunSuite {
 
   test("min operator works") {
     assert((Rational(1, 2) min Rational(1, 5)) == Rational(1, 5))
+    assert((Rational(1, 2) min Rational(4, 5)) == Rational(1, 2))
     assert(RationalJ.rational(1, 2).min(RationalJ.rational(1, 5)).equals(RationalJ.rational(1, 5)))
+    assert(RationalJ.rational(1, 2).min(RationalJ.rational(4, 5)).equals(RationalJ.rational(1, 2)))
   }
 
   test("max operator works") {
     assert((Rational(1, 2) max Rational(1, 5)) == Rational(1, 2))
+    assert((Rational(1, 2) max Rational(4, 5)) == Rational(4, 5))
     assert(RationalJ.rational(1, 2).max(RationalJ.rational(1, 5)).equals(RationalJ.rational(1, 2)))
+    assert(RationalJ.rational(1, 2).max(RationalJ.rational(4, 5)).equals(RationalJ.rational(4, 5)))
   }
 }
