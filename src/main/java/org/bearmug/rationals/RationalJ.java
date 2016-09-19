@@ -14,6 +14,9 @@ public final class RationalJ {
     }
 
     private RationalJ(int number, int denominator) {
+        if (denominator == 0) {
+            throw new IllegalArgumentException("Denominator cannot be 0");
+        }
         final int gcd = gcd(number, denominator);
         this.num = number/ gcd;
         this.den = denominator / gcd;

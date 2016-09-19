@@ -7,6 +7,8 @@ import scala.annotation.tailrec
  */
 class Rational private(val n: Int, val d: Int) {
 
+  require(d != 0)
+
   override def toString: String = s"$n/$d"
   def unary_- = Rational(-n, d)
   def *(o: Rational) = Rational(n * o.n, d * o.d)

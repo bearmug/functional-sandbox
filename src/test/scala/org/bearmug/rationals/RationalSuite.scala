@@ -1,5 +1,7 @@
 package org.bearmug.rationals
 
+import java.lang.IllegalAccessException
+
 import org.junit.runner.RunWith
 import org.scalatest.FunSuite
 import org.scalatest.junit.JUnitRunner
@@ -112,5 +114,10 @@ class RationalSuite extends FunSuite {
     assert((Rational(1, 2) max Rational(4, 5)) == Rational(4, 5))
     assert(RationalJ.rational(1, 2).max(RationalJ.rational(1, 5)).equals(RationalJ.rational(1, 2)))
     assert(RationalJ.rational(1, 2).max(RationalJ.rational(4, 5)).equals(RationalJ.rational(4, 5)))
+  }
+
+  test("zero denominator cannot be used") {
+    intercept[IllegalArgumentException](Rational(1, 0))
+    intercept[IllegalArgumentException](RationalJ.rational(1, 0))
   }
 }
