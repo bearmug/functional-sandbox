@@ -17,4 +17,3 @@ script: gradle build --continue
 
 after_success:
   - gradle jacocoTestReport reportScoverage coveralls
-  - bash <(curl -s https://codecov.io/bash)
