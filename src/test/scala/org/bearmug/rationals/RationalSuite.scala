@@ -30,12 +30,14 @@ class RationalSuite extends FunSuite {
 
   test("multiplication works as expected") {
     assert((Rational(3, 2) * Rational(7, 5)).toString == Rational(21, 10).toString)
-    assert(RationalJ.rational(3, 2).multiply(RationalJ.rational(7, 5)).toString == RationalJ.rational(21, 10).toString)
+    val javaRes: String = RationalJ.rational(3, 2).multiply(RationalJ.rational(7, 5)).toString
+    assert(javaRes == RationalJ.rational(21, 10).toString)
   }
 
   test("division works as expected") {
     assert((Rational(3, 2) / Rational(7, 5)).toString == Rational(15, 14).toString)
-    assert(RationalJ.rational(3, 2).divide(RationalJ.rational(7, 5)).toString == RationalJ.rational(15, 14).toString)
+    val javaRes: String = RationalJ.rational(3, 2).divide(RationalJ.rational(7, 5)).toString
+    assert(javaRes == RationalJ.rational(15, 14).toString)
   }
 
   test("tuples approach works") {
@@ -49,17 +51,20 @@ class RationalSuite extends FunSuite {
 
   test("multiplication output simplified") {
     assert((Rational(2, 4) * Rational(4, 10)).toString == "1/5")
-    assert(RationalJ.rational(2, 4).multiply(RationalJ.rational(4, 10)).toString == RationalJ.rational(1, 5).toString)
+    val javaRes: String = RationalJ.rational(2, 4).multiply(RationalJ.rational(4, 10)).toString
+    assert(javaRes == RationalJ.rational(1, 5).toString)
   }
 
   test("plus works as expected") {
     assert((Rational(3, 2) + Rational(7, 5)).toString == Rational(29, 10).toString)
-    assert(RationalJ.rational(3, 2).plus(RationalJ.rational(7, 5)).toString == RationalJ.rational(29, 10).toString)
+    val javaRes: String = RationalJ.rational(3, 2).plus(RationalJ.rational(7, 5)).toString
+    assert(javaRes == RationalJ.rational(29, 10).toString)
   }
 
   test("minus works as expected") {
     assert((Rational(3, 2) - Rational(7, 5)).toString == Rational(1, 10).toString)
-    assert(RationalJ.rational(3, 2).minus(RationalJ.rational(7, 5)).toString == RationalJ.rational(1, 10).toString)
+    val javaRes: String = RationalJ.rational(3, 2).minus(RationalJ.rational(7, 5)).toString
+    assert(javaRes == RationalJ.rational(1, 10).toString)
   }
 
   test("equals finally works OK") {
