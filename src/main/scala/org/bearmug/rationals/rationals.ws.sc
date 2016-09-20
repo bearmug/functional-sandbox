@@ -1,4 +1,6 @@
 import org.bearmug.rationals.Rational
+import org.bearmug.rationals.RationalConversions.tuple2Rational
+
 
 object RationalsSandbox {
   val r = Rational(4, 5)
@@ -8,4 +10,9 @@ object RationalsSandbox {
   val rNegation = -r
 
   val mult = r * r2
+
+//  Rational(1, 2) + (3, 2) +
+
+
+
 }

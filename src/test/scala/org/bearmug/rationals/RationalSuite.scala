@@ -1,10 +1,9 @@
 package org.bearmug.rationals
 
-import java.lang.IllegalAccessException
-
 import org.junit.runner.RunWith
 import org.scalatest.FunSuite
 import org.scalatest.junit.JUnitRunner
+import RationalConversions._
 
 /**
   * Suite tests Java/Scala methods at once for demo purposes.
@@ -128,5 +127,16 @@ class RationalSuite extends FunSuite {
   test("zero denominator cannot be used") {
     intercept[IllegalArgumentException](Rational(1, 0))
     intercept[IllegalArgumentException](RationalJ.rational(1, 0))
+  }
+
+  test("implcit tuple conversion works") {
+    assert(Rational(1, 2) * (3, 5) == Rational(3, 10))
+    assert((1, 2) / Rational(3) == Rational(1, 6))
+    assert(-(1, 2) * Rational(1, 2) == Rational(-1, 4))
+  }
+
+  test("concise expressions available with implicit conversion") {
+    assert(Rational(2, 3) * Rational(1, 22) + Rational(1, 2) / Rational(1, 6) ==
+      Rational(2, 3) * (1, 22) + (1, 2) / (1, 6))
   }
 }
