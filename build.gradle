@@ -2,6 +2,7 @@ plugins {
     id 'scala'
     id 'org.scoverage' version '2.1.0'
     id 'jacoco'
+    id 'com.github.kt3k.coveralls' version '2.6.3'
 }
 
 repositories {
@@ -17,4 +18,11 @@ dependencies {
 
     scoverage 'org.scoverage:scalac-scoverage-plugin_2.11:1.1.0'
     scoverage 'org.scoverage:scalac-scoverage-runtime_2.11:1.1.0'
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
 }

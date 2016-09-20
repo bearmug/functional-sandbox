@@ -1,10 +1,9 @@
 package org.bearmug.rationals
 
-import java.lang.IllegalAccessException
-
 import org.junit.runner.RunWith
 import org.scalatest.FunSuite
 import org.scalatest.junit.JUnitRunner
+import RationalConversions._
 
 /**
   * Suite tests Java/Scala methods at once for demo purposes.
@@ -30,12 +29,14 @@ class RationalSuite extends FunSuite {
 
   test("multiplication works as expected") {
     assert((Rational(3, 2) * Rational(7, 5)).toString == Rational(21, 10).toString)
-    assert(RationalJ.rational(3, 2).multiply(RationalJ.rational(7, 5)).toString == RationalJ.rational(21, 10).toString)
+    val javaRes: String = RationalJ.rational(3, 2).multiply(RationalJ.rational(7, 5)).toString
+    assert(javaRes == RationalJ.rational(21, 10).toString)
   }
 
   test("division works as expected") {
     assert((Rational(3, 2) / Rational(7, 5)).toString == Rational(15, 14).toString)
-    assert(RationalJ.rational(3, 2).divide(RationalJ.rational(7, 5)).toString == RationalJ.rational(15, 14).toString)
+    val javaRes: String = RationalJ.rational(3, 2).divide(RationalJ.rational(7, 5)).toString
+    assert(javaRes == RationalJ.rational(15, 14).toString)
   }
 
   test("tuples approach works") {
@@ -49,17 +50,20 @@ class RationalSuite extends FunSuite {
 
   test("multiplication output simplified") {
     assert((Rational(2, 4) * Rational(4, 10)).toString == "1/5")
-    assert(RationalJ.rational(2, 4).multiply(RationalJ.rational(4, 10)).toString == RationalJ.rational(1, 5).toString)
+    val javaRes: String = RationalJ.rational(2, 4).multiply(RationalJ.rational(4, 10)).toString
+    assert(javaRes == RationalJ.rational(1, 5).toString)
   }
 
   test("plus works as expected") {
     assert((Rational(3, 2) + Rational(7, 5)).toString == Rational(29, 10).toString)
-    assert(RationalJ.rational(3, 2).plus(RationalJ.rational(7, 5)).toString == RationalJ.rational(29, 10).toString)
+    val javaRes: String = RationalJ.rational(3, 2).plus(RationalJ.rational(7, 5)).toString
+    assert(javaRes == RationalJ.rational(29, 10).toString)
   }
 
   test("minus works as expected") {
     assert((Rational(3, 2) - Rational(7, 5)).toString == Rational(1, 10).toString)
-    assert(RationalJ.rational(3, 2).minus(RationalJ.rational(7, 5)).toString == RationalJ.rational(1, 10).toString)
+    val javaRes: String = RationalJ.rational(3, 2).minus(RationalJ.rational(7, 5)).toString
+    assert(javaRes == RationalJ.rational(1, 10).toString)
   }
 
   test("equals finally works OK") {
@@ -105,19 +109,48 @@ class RationalSuite extends FunSuite {
   test("min operator works") {
     assert((Rational(1, 2) min Rational(1, 5)) == Rational(1, 5))
     assert((Rational(1, 2) min Rational(4, 5)) == Rational(1, 2))
-    assert(RationalJ.rational(1, 2).min(RationalJ.rational(1, 5)).equals(RationalJ.rational(1, 5)))
-    assert(RationalJ.rational(1, 2).min(RationalJ.rational(4, 5)).equals(RationalJ.rational(1, 2)))
+    assert(RationalJ.rational(1, 2).min(RationalJ.rational(1, 5))
+      .equals(RationalJ.rational(1, 5)))
+    assert(RationalJ.rational(1, 2).min(RationalJ.rational(4, 5))
+      .equals(RationalJ.rational(1, 2)))
   }
 
   test("max operator works") {
     assert((Rational(1, 2) max Rational(1, 5)) == Rational(1, 2))
     assert((Rational(1, 2) max Rational(4, 5)) == Rational(4, 5))
-    assert(RationalJ.rational(1, 2).max(RationalJ.rational(1, 5)).equals(RationalJ.rational(1, 2)))
-    assert(RationalJ.rational(1, 2).max(RationalJ.rational(4, 5)).equals(RationalJ.rational(4, 5)))
+    assert(RationalJ.rational(1, 2).max(RationalJ.rational(1, 5))
+      .equals(RationalJ.rational(1, 2)))
+    assert(RationalJ.rational(1, 2).max(RationalJ.rational(4, 5))
+      .equals(RationalJ.rational(4, 5)))
   }
 
   test("zero denominator cannot be used") {
     intercept[IllegalArgumentException](Rational(1, 0))
     intercept[IllegalArgumentException](RationalJ.rational(1, 0))
+  }
+
+  test("implcit tuple conversion works") {
+    assert(Rational(1, 2) * (3, 5) == Rational(3, 10))
+    assert((1, 2) / Rational(3) == Rational(1, 6))
+    assert(-(1, 2) * Rational(1, 2) == Rational(-1, 4))
+  }
+
+  test("concise expressions available with implicit conversion import") {
+    assert(Rational(2, 3) * Rational(1, 22)
+      + Rational(1, 2) / Rational(1, 6) ==
+      (2, 3) * (1, 22) + (1, 2) / (1, 6))
+  }
+
+  test("implicit int to rational conversion available") {
+    assert(Rational(1, 2) * Rational(2) == (1, 2) * 2)
+  }
+
+  test("equals implementation keeps contract against nulls and other objects") {
+    assert(!Rational(2, 3).equals(null))
+    assert(!(Rational(2, 3) == null))
+    //noinspection ComparingUnrelatedTypes
+    assert(!Rational(2, 3).equals(List()))
+    //noinspection ComparingUnrelatedTypes
+    assert(!(Rational(2, 3) == List()))
   }
 }
