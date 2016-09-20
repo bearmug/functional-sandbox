@@ -136,7 +136,8 @@ class RationalSuite extends FunSuite {
   }
 
   test("concise expressions available with implicit conversion import") {
-    assert(Rational(2, 3) * Rational(1, 22) + Rational(1, 2) / Rational(1, 6) ==
+    assert(Rational(2, 3) * Rational(1, 22)
+      + Rational(1, 2) / Rational(1, 6) ==
       (2, 3) * (1, 22) + (1, 2) / (1, 6))
   }
 

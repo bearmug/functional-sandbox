@@ -11,4 +11,5 @@ object RationalsSandbox {
 
   val mult = r * r2
 
+  val im = (2, 3) * (1, 22) + (1, 2) / (1, 6)
 }

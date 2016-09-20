@@ -5,13 +5,13 @@ With great kickoff from [Programming in Scala](https://www.amazon.com/Programmin
 I`m really interested if it is possible to implement similar stuff with
 Java and may be do more with Scala concise.
 
-## Default details
+## Default details - unchanged
 Implementation contains regular arithmetic operations ``+, -, /, *``. It
 also has unary ``-`` and ``min/max`` functions to enable simple 
 selections. Validation also implemented by common ``Predef.require``
 call.
 
-## Essentials
+## *equals* and *toString* overridden
 Formatted ``toString`` looks a bit shorter than direct concatenation and 
 served at compile time:
 ```scala
@@ -28,12 +28,12 @@ assertions simple and does not require ``toString`` usage.
   }
 ```
 
-## Operations
+## Relational operations
 Arithmetic operations just implemented as defined into original, nothing
 interesting there. Here is the link to the [Rational.scala](src/main/scala/org/bearmug/rationals/Rational.scala) source to
 review. 
 
-Really exciting part is rationals coparison operations. Those ones clean
+Really exciting part is rationals comparison operations. Those ones clean
 and self-explanatory:
 ```scala
   def >(o: Rational): Boolean = this - o match { case Rational(in, _) => in > 0 }
@@ -41,3 +41,61 @@ and self-explanatory:
   def >=(o: Rational): Boolean = this > o || this == o
   def <=(o: Rational): Boolean = this < o || this == o
 ```
+
+## Rationals construction
+As a very first step, [GCD](https://en.wikipedia.org/wiki/Greatest_common_divisor) moved to companion object. 
+Our rational numbers have to be simplified with GCD, but if we`ll do 
+this inside ``Rational`` class construction, there is a chance that we 
+will use initial (before ``GCD``) values for subsequent calclations. It may 
+looks like:
+```scala
+class SampleThing(p: Int) {
+  val validParam = recalc(p)
+  def businessMethod(i: Int): Int = i * validParam // OK
+  def businessMethod(i: Int): Int = i * p // bloody wrong, "p" forbidden
+  def recalc(p: Int) = ??? // some init pre-calc
+}
+```
+Therefore:
+- ``Rational`` primary constructor declared as ``private`` to prevent 
+non-simplified rationals creation from clients code.
+- Recursive ``GCD`` Rational creation algorithm called from companion 
+``apply`` method.
+- Two overloaded ``apply`` methods using initial one with subsequent
+``GCD`` call.
+- ``Rational`` class internals have access to normalized data only. 
+Profit!!!
+ 
+## Implicit conversions
+Rationals syntax really great:
+```scala
+val m = (Rational(1, 2) min Rational(1, 5)
+val res = Rational(2, 3) * Rational(1, 22) 
+            + Rational(1, 2) / Rational(1, 6)   
+```
+But it may be verbose at some cases. Implicit conversions to the rescue!
+It is enough to define implicit conversions object:
+```scala
+object RationalConversions {
+  implicit def tuple2Rational(t: (Int, Int)): Rational = t match {
+    case (n, d) => Rational(n, d)
+  }
+  implicit def int2Rational(i: Int): Rational = Rational(i)
+}
+```
+
+And import it inside client code to comply with conversions awareness rule:
+```scala
+import RationalConversions._ // import at the same package level
+```
+
+After these steps we may run requests like:
+```scala
+val im = (2, 3) * (1, 22) + (1, 2) / (1, 6)
+> im: org.bearmug.rationals.Rational = 100/33
+```
+
+## Compare with Java
+Java class wit similar functional implemented and tested [here](src/main/java/org/bearmug/rationals/RationalJ.java)
+As it is easy to see it is much more verbose, has no these features with 
+implicit conversions and operators overloading. Things stay the same.
