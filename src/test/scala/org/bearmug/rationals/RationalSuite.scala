@@ -135,8 +135,17 @@ class RationalSuite extends FunSuite {
     assert(-(1, 2) * Rational(1, 2) == Rational(-1, 4))
   }
 
-  test("concise expressions available with implicit conversion") {
+  test("concise expressions available with implicit conversion import") {
     assert(Rational(2, 3) * Rational(1, 22) + Rational(1, 2) / Rational(1, 6) ==
-      Rational(2, 3) * (1, 22) + (1, 2) / (1, 6))
+      (2, 3) * (1, 22) + (1, 2) / (1, 6))
+  }
+
+  test("equals implementation keeps contract against nulls and other objects") {
+    assert(!Rational(2, 3).equals(null))
+    assert(!(Rational(2, 3) == null))
+    //noinspection ComparingUnrelatedTypes
+    assert(!Rational(2, 3).equals(List()))
+    //noinspection ComparingUnrelatedTypes
+    assert(!(Rational(2, 3) == List()))
   }
 }

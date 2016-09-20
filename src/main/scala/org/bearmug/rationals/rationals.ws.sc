@@ -11,8 +11,4 @@ object RationalsSandbox {
 
   val mult = r * r2
 
-//  Rational(1, 2) + (3, 2) +
-
-
-
 }
