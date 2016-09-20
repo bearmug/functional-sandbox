@@ -69,9 +69,8 @@ Profit!!!
 ## Implicit conversions
 Rationals syntax really great:
 ```scala
-val m = (Rational(1, 2) min Rational(1, 5)
-val res = Rational(2, 3) * Rational(1, 22) 
-            + Rational(1, 2) / Rational(1, 6)   
+val m = Rational(1, 2) min Rational(1, 5)
+val res = Rational(2, 3) * Rational(1, 22) + Rational(1, 2) / Rational(1, 6)   
 ```
 But it may be verbose at some cases. Implicit conversions to the rescue!
 It is enough to define implicit conversions object:
@@ -89,7 +88,8 @@ And import it inside client code to comply with conversions awareness rule:
 import RationalConversions._ // import at the same package level
 ```
 
-After these steps we may run requests like:
+After these steps we may run requests like below and output is still our
+``Rational`` number:
 ```scala
 val im = (2, 3) * (1, 22) + (1, 2) / (1, 6)
 > im: org.bearmug.rationals.Rational = 100/33

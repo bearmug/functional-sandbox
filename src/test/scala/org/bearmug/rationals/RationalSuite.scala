@@ -141,6 +141,10 @@ class RationalSuite extends FunSuite {
       (2, 3) * (1, 22) + (1, 2) / (1, 6))
   }
 
+  test("implicit int to rational conversion available") {
+    assert(Rational(1, 2) * Rational(2) == (1, 2) * 2)
+  }
+
   test("equals implementation keeps contract against nulls and other objects") {
     assert(!Rational(2, 3).equals(null))
     assert(!(Rational(2, 3) == null))
