@@ -39,7 +39,7 @@ class LISubsequence(l: List[Int]) {
 
     process(l, TreeSet.empty(ord)) toList match {
       case Nil => 0
-      case l => l map (_._1) max
+      case ls => ls map (_._1) max
     }
   }
 }

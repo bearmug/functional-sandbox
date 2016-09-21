@@ -1,10 +1,9 @@
 package org.bearmug.rationals
 
+import org.bearmug.rationals.RationalConversions.{int2Rational, tuple2Rational}
 import org.junit.runner.RunWith
 import org.scalatest.FunSuite
 import org.scalatest.junit.JUnitRunner
-import RationalConversions.tuple2Rational
-import RationalConversions.int2Rational
 
 /**
   * Suite tests Java/Scala methods at once for demo purposes.
