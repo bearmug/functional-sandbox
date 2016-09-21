@@ -3,7 +3,8 @@ package org.bearmug.rationals
 import org.junit.runner.RunWith
 import org.scalatest.FunSuite
 import org.scalatest.junit.JUnitRunner
-import RationalConversions._
+import RationalConversions.tuple2Rational
+import RationalConversions.int2Rational
 
 /**
   * Suite tests Java/Scala methods at once for demo purposes.
@@ -147,7 +148,6 @@ class RationalSuite extends FunSuite {
 
   test("equals implementation keeps contract against nulls and other objects") {
     assert(!Rational(2, 3).equals(null))
-    assert(!(Rational(2, 3) == null))
     //noinspection ComparingUnrelatedTypes
     assert(!Rational(2, 3).equals(List()))
     //noinspection ComparingUnrelatedTypes
