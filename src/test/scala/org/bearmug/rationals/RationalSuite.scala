@@ -148,7 +148,6 @@ class RationalSuite extends FunSuite {
 
   test("equals implementation keeps contract against nulls and other objects") {
     assert(!Rational(2, 3).equals(null))
-    assert(!(Rational(2, 3) == null))
     //noinspection ComparingUnrelatedTypes
     assert(!Rational(2, 3).equals(List()))
     //noinspection ComparingUnrelatedTypes

@@ -29,7 +29,7 @@ At the same time it keeps contract with comparison against ``null``s and wrong c
   }
 ```
 Now ``Rational`` assertions concise and does not require ``toString`` usage:
-````scala
+```scala
   test("max operator works") {
     assert((Rational(1, 2) max Rational(1, 5)) == Rational(1, 2))
   }
@@ -62,23 +62,25 @@ class SampleThing(p: Int) {
 ```
 Therefore:
 - ``Rational`` primary constructor now declared as ``private`` to prevent non-simplified rationals creation from clients code.
-- Recursive ``GCD`` Rational creation algorithm called from companion ``apply`` method. 
-Direct ``Rational`` creation could be done:
+```scala
+class Rational private(val n: Int, val d: Int) { ... }
+```
+- Recursive ``Rational`` creation algorithm called from companion ``apply`` method:
 ```scala
   cal r = Rational(1, 33) // create Rational over companion object 'apply' calll
 ```
 - Two overloaded ``apply`` methods using initial one with subsequent ``GCD`` call. 
-Methods look just perfect:
+It looks just perfect:
 ```scala
   def apply(n: Int): Rational = Rational(n, 1)
   def apply(t: (Int, Int)): Rational = t match { case (r, d) => Rational(r, d) }
 ```
 
 From now ``Rational`` implementation internally restricted to use non-normalized values for ``number/denominator`` pair.
-On another end ``Rational`` API users may feel them safer, since there are less chances to hit wrong call.
+On another end, ``Rational`` API users may feel safer, since there are less chances to hit wrong call.
 Profit!!!
  
-## Rational implicit conversions
+## Rational numbers implicit conversions
 Rationals syntax really great:
 ```scala
 val m = Rational(1, 2) min Rational(1, 5)
@@ -95,7 +97,8 @@ object RationalConversions {
 }
 ```
 
-...And import it inside client code to comply with conversions awareness rule:
+...And import it inside client code to comply with conversions awareness rule. 
+Now it is possible to calc expressions with ``Rational`` directly using ``Int`` and ``(Int, Int)`` :
 ```scala
 import RationalConversions._ // import at the same package level
 ```
