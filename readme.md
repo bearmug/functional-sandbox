@@ -1,12 +1,15 @@
-[![Build Status](https://travis-ci.org/bearmug/functional-sandbox.svg?branch=master)](https://travis-ci.org/bearmug/functional-sandbox) [![Coverage Status](https://coveralls.io/repos/github/bearmug/functional-sandbox/badge.svg?branch=5-rationals-problem---describe-and-re-use)](https://coveralls.io/github/bearmug/functional-sandbox?branch=5-rationals-problem---describe-and-re-use) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/b0b71d6e74b14b58baffafce3ef1d550)](https://www.codacy.com/app/pavel-fadeev/functional-sandbox?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=bearmug/functional-sandbox&amp;utm_campaign=Badge_Grade)
+[![Build Status](https://travis-ci.org/bearmug/functional-sandbox.svg?branch=master)](https://travis-ci.org/bearmug/functional-sandbox) [![Coverage Status](https://coveralls.io/repos/github/bearmug/functional-sandbox/badge.svg?branch=master)](https://coveralls.io/github/bearmug/functional-sandbox?branch=master) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/b0b71d6e74b14b58baffafce3ef1d550)](https://www.codacy.com/app/pavel-fadeev/functional-sandbox?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=bearmug/functional-sandbox&amp;utm_campaign=Badge_Grade)
  
 # Scala enhanced rational numbers
-With great kickoff from [Programming in Scala](https://www.amazon.com/Programming-Scala-Updated-2-12/dp/0981531687) about [rationals](http://booksites.artima.com/programming_in_scala/examples/html/ch06.html)
+With great kickoff from 
+[Programming in Scala](https://www.amazon.com/Programming-Scala-Updated-2-12/dp/0981531687) 
+about [rationals](http://booksites.artima.com/programming_in_scala/examples/html/ch06.html)
 I`m really interested if it is possible improve given Scala solution. And 
 is it possible to find similar elegance inside Java version for this code?
 
 ## Default details - unchanged
-A lot of stuff remaining from [canonical implementation](http://booksites.artima.com/programming_in_scala/examples/html/ch06.html). 
+A lot of stuff remaining from canonical 
+[implementation](http://booksites.artima.com/programming_in_scala/examples/html/ch06.html). 
 It contains regular arithmetic operations ``+, -, /, *``. 
 Solution also has unary ``-`` and ``min/max`` functions to enable simple selections. 
 Validation implemented by common ``Predef.require`` call as well.
