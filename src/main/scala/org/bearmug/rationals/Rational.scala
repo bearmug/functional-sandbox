@@ -42,6 +42,6 @@ object Rational {
     gcd(n, d) match { case g => new Rational(n/g, d/g) }
   }
   def apply(n: Int): Rational = Rational(n, 1)
-  def apply(t: (Int, Int)): Rational = { t match { case (r, d) => Rational(r, d) } }
+  def apply(t: (Int, Int)): Rational = t match { case (r, d) => Rational(r, d) }
   def unapply(r: Rational): Option[(Int, Int)] = Some(r.n, r.d)
 }
