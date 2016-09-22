@@ -18,9 +18,7 @@ class LISubsequence(l: List[Int]) {
     }
   }
 
-  lazy val length = findLength()
-
-  def findLength(): Int = {
+  lazy val length = {
     @tailrec
     def process(numbers: List[Int], seqs: TreeSet[Pair]): TreeSet[Pair] = numbers match {
       case Nil => seqs
