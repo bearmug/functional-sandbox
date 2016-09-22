@@ -1,5 +1,7 @@
 # Longest Increasing Subsequence with Scala
 ## Common description
+[Ignition article]
+(http://www.geeksforgeeks.org/dynamic-programming-set-3-longest-increasing-subsequence/)
 ## Implementation idea
 ### General design for solution class
 ### Data structure to iterate over solution search
