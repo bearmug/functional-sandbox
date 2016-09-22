@@ -4,7 +4,8 @@ import scala.annotation.tailrec
 import scala.collection.immutable.TreeSet
 
 /**
-  * Class to see if Scala code for [[https://en.wikipedia.org/wiki/Longest_increasing_subsequence LIS]]
+  * Class to see if Scala code for
+  * [[https://en.wikipedia.org/wiki/Longest_increasing_subsequence LIS]]
   * could be clean and efficient.
   */
 class LISubsequence(l: List[Int]) {
@@ -31,15 +32,18 @@ class LISubsequence(l: List[Int]) {
       s match {
         case e if e.isEmpty => seqs headOption match {
           case None => seqs + ((1, x))
-          case Some(h) => seqs + ((h._1 + 1, x))
+          case Some((hl, _)) => seqs + ((hl + 1, x))
         }
-        case e => seqs - e.last + ((e.last._1, x))
+        case e => e.lastOption match {
+          case None => seqs + ((1, x))
+          case Some((ll, lm)) => seqs - ((ll, lm)) + ((ll, x))
+        }
       }
     }
 
     process(l, TreeSet.empty(ord)) toList match {
       case Nil => 0
-      case ls => ls map (_._1) max
+      case ls => ls.map { case (tl, tm) => tl }.max
     }
   }
 }
