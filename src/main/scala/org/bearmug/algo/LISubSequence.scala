@@ -8,7 +8,7 @@ import scala.collection.immutable.TreeSet
   * [[https://en.wikipedia.org/wiki/Longest_increasing_subsequence LIS]]
   * could be clean and efficient.
   */
-class LISubsequence(l: List[Int]) {
+class LISubSequence(l: List[Int]) {
 
   type Pair = (Int, Int) // (length, max value) pair
 

@@ -1,4 +1,4 @@
-import org.bearmug.algo.LISubsequence
+import org.bearmug.algo.LISubSequence
 
-val l = new LISubsequence(Nil)
+val l = new LISubSequence(Nil)
 l.length
