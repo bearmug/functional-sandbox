@@ -29,6 +29,6 @@ task did push me towards investigations for canonical Scala implementation.
 Most of solutions I`ve found are simply written with imperative style.
 Or have inacceptable time complexity like O(n^2) or worse. 
 So, primary goal now is to see if pure functional solution could be short and efficient at the same time.
-And is it much slower than vanilla Java version?
+And... actually, is it much slower than vanilla Java version?
 
 [It`s time to dive into details!](docs/02-algo-lis.md)
