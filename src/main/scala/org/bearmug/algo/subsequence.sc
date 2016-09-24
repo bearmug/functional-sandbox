@@ -1,6 +1,38 @@
-import org.bearmug.algo.LISubSequence
+import scala.annotation.tailrec
+import scala.collection.immutable.TreeSet
 
-val l = new LISubSequence(Nil)
-l.length
+object LIS {
 
-val s = new LISubSequence(List(3, 1, 2, 5,  4))
+  type Pair = (Int, Int) // (length, max value) pair
+
+  implicit val ord: Ordering[Pair] = new Ordering[Pair] {
+    override def compare(x: Pair, y: Pair): Int = (x, y) match {
+      case ((_, xt), (_, yt)) => yt compareTo xt
+    }
+  }
+
+  @tailrec
+  def process(numbers: List[Int], seqs: TreeSet[Pair]): TreeSet[Pair] = numbers match {
+    case Nil => seqs
+    case x :: xs => process(xs, appendSeq(seqs, x))
+  }
+
+  def appendSeq(seqs: TreeSet[Pair], x: Int): TreeSet[Pair] = {
+    val s = seqs to((Integer.MAX_VALUE, x))
+    s match {
+      case e if e.isEmpty => seqs headOption match {
+        case None => seqs + ((1, x))
+        case Some((hl, _)) => seqs + ((hl + 1, x))
+      }
+      case e => e.lastOption match {
+        case None => seqs + ((1, x))
+        case Some((ll, lm)) => seqs - ((ll, lm)) + ((ll, x))
+      }
+    }
+  }
+
+
+}
+
+
+LIS.process(List(3, 1, 2, 4), TreeSet.empty(LIS.ord))
