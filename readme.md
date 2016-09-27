@@ -48,7 +48,7 @@ Those ones could be clean and self-explanatory:
   def <=(o: Rational): Boolean = this < o || this == o
 ```
 
-### Rationals comparison enhancement
+### Rationals comparison enhancement #1
 There are even more elegant way to define ``>, <, >= and <=`` operations for ``Rational`` class.
 It is enough to use trait ``Ordered`` like:
 ```scala
@@ -61,7 +61,9 @@ And then just define single abstract method from ``Ordered``:
     // Ordering.Int.compare((this - that).n, 0) // or this way, outcome is the same
 ```
 All the boilerplate code for comparisons could be purged from project now. 
-It is available with ``Ordered`` trait. Moreover, it is possible to extend this trait for ``min/max``:
+
+### Rationals comparison enhancement #2
+Moreover, it is possible to extend this trait for ``min/max``:
 ```scala
 trait RichOrdered[T <: RichOrdered[T]] extends Ordered[T] {
   def min(o: T): Ordered[T] = if (this <= o) this else o
