@@ -2,11 +2,15 @@ package org.bearmug.rationals
 
 import scala.annotation.tailrec
 
+trait RichOrdered[T <: RichOrdered[T]] extends Ordered[T] {
+  def min(o: T): Ordered[T] = if (this <= o) this else o
+  def max(o: T): Ordered[T] = if (this >= o) this else o
+}
 /**
   * Functional rational numbers implementation. Inspired by 'Programming in Scala' book. See
   * [[http://booksites.artima.com/programming_in_scala/examples/html/ch06.html original book example.]]
   */
-class Rational private(val n: Int, val d: Int) extends Ordered[Rational] {
+class Rational private(val n: Int, val d: Int) extends RichOrdered[Rational] {
 
   require(d != 0)
 
@@ -15,16 +19,13 @@ class Rational private(val n: Int, val d: Int) extends Ordered[Rational] {
     case o: Rational => this - o match { case Rational(on, _) => on == 0 }
     case _ => false
   }
-  override def compare(that: Rational): Int =
-    Ordering.Int.compare((this - that).n, 0)
+  override def compare(that: Rational): Int = this.n * that.d - that.n * this.d
 
   def unary_-():Rational = Rational(-n, d)
   def *(o: Rational): Rational = Rational(n * o.n, d * o.d)
   def /(o: Rational): Rational = Rational(n * o.d, d * o.n)
   def +(o: Rational): Rational = Rational(n * o.d + o.n * d, d * o.d)
   def -(o: Rational): Rational = Rational(n * o.d - o.n * d, d * o.d)
-  def min(o: Rational): Rational = if (this <= o) this else o
-  def max(o: Rational): Rational = if (this >= o) this else o
 }
 
 object RationalConversions {
