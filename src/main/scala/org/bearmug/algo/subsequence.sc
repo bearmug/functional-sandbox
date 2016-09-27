@@ -35,4 +35,4 @@ object LIS {
 }
 
 
-LIS.process(List(3, 1, 2, 4), TreeSet.empty(LIS.ord))
+LIS.process(List(4, 1,3,2,5), TreeSet.empty(LIS.ord))

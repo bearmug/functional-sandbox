@@ -3,7 +3,7 @@ Longest Increasing Subsequence
 [problem](https://en.wikipedia.org/wiki/Longest_increasing_subsequence) 
 is a well-known topic from dynamic programming domain. 
 [Ignition article]
-(http://www.geeksforgeeks.org/dynamic-programming-set-3-longest-increasing-subsequence/)
+(http://www.geeksforgeeks.org/longest-monotonically-increasing-subsequence-size-n-log-n/)
 and same [hackerrank](https://www.hackerrank.com/challenges/longest-increasing-subsequent)
 task did push me towards investigations for canonical Scala implementation.
 Most of solutions I`ve found are simply written with imperative style.
@@ -31,44 +31,39 @@ it is really required.
 
 ## Data structures to iterate over solution search
 Solution upper-level logic just taken from this [example]
-(http://www.geeksforgeeks.org/dynamic-programming-set-3-longest-increasing-subsequence/).
-In short, this algorithm scan incoming elements one-by-one and:
- - find longest subsequence A to append new element
- - increment given subsequence A
- - check if there are subsequence with same length B and purge the one with 
- biggest element at the tail.
+(http://www.geeksforgeeks.org/longest-monotonically-increasing-subsequence-size-n-log-n/).
+In short, this algorithm scans incoming elements one-by-one and:
+ - if input element is the smallest one across existing subsequences tails - 
+ just create new subsequence with length 1 for this element. 
+ Existing subsequence with length 1 to be removed 
+ - if next element is the greatest one across existing subsequences tails - 
+ clone longest existing subequence and increment it with given element
+ - otherwise clone subsequence with tail closest to input element and 
+ increment it with this element. New subsequence with length N discards
+ other subsequences with the same length
 
-Known solution build elements sequences. These sequences kept sorted by their lengths.
-At the end of solution it is enough just take last sequence and return it`s 
-length as a result. Intermediate data structure may look like this:
-```
-val[0] = [2]
-val[1] = [1, 4, 5]
-val[2] = [3, 5, 8, 9]
-```
-It appears that given algorithm calculates two parameters for each subsequence:
- - total elements number for given subsequence
- - max subsequence element
-So why not to store this values tuple for each of elements above
-```scala
-type Pair = (Int, Int)
-``` 
-
-This case simplest solution for input ``3, 1, 2, 4, 5`` will look like:
+Solution for input ``4, 1, 3, 2, 5`` will look like:
 ```scala
 // put initial element
-res0 = ((1,3)) // subsequence with length == 1 and max element == 3
+((4)) // 
 
 // keep going with next item
-res1 = ((1,1))
+((1)) // put '1' to new element with length == 1 and remove (4) as two 
+sequences have same length
 
-// put 2
-res2 = ((2,2), (1,1))
+// put 3
+((1), (1,3)) // 3 is the biggest number agross existing subsequences tails, 
 
-// 4
-((3,4), (2,2), (1,1))
+// 2
+((1), (1,2)) //(1) found, cloned and transformed to (1,2), (1,3) removed 
+as duplicate for length 2 
 
+// 5
+((1), (1,2), (1,2,5)) //5 is the greatest across existing subsequences
 ```
+ 
+ But why track full subsequence, looks like an overkill. 
+ it is enough to store each subsequence latest element and lengthm. 
  
 ## Recursive subsequence scan
 The high-level idea is to iterate over input list one-by-one.
