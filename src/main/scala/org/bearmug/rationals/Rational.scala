@@ -6,7 +6,7 @@ import scala.annotation.tailrec
   * Functional rational numbers implementation. Inspired by 'Programming in Scala' book. See
   * [[http://booksites.artima.com/programming_in_scala/examples/html/ch06.html original book example.]]
   */
-class Rational private(val n: Int, val d: Int) {
+class Rational private(val n: Int, val d: Int) extends Ordered[Rational] {
 
   require(d != 0)
 
@@ -15,15 +15,14 @@ class Rational private(val n: Int, val d: Int) {
     case o: Rational => this - o match { case Rational(on, _) => on == 0 }
     case _ => false
   }
+  override def compare(that: Rational): Int =
+    Ordering.Int.compare((this - that).n, 0)
+
   def unary_-():Rational = Rational(-n, d)
   def *(o: Rational): Rational = Rational(n * o.n, d * o.d)
   def /(o: Rational): Rational = Rational(n * o.d, d * o.n)
   def +(o: Rational): Rational = Rational(n * o.d + o.n * d, d * o.d)
   def -(o: Rational): Rational = Rational(n * o.d - o.n * d, d * o.d)
-  def >(o: Rational): Boolean = this - o match { case Rational(in, _) => in > 0 }
-  def <(o: Rational): Boolean = this - o match { case Rational(in, _) => in < 0 }
-  def >=(o: Rational): Boolean = this > o || this == o
-  def <=(o: Rational): Boolean = this < o || this == o
   def min(o: Rational): Rational = if (this <= o) this else o
   def max(o: Rational): Rational = if (this >= o) this else o
 }
