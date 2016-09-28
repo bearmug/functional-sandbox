@@ -4,7 +4,7 @@ import scala.annotation.tailrec
 
 /**
   * Functional rational numbers implementation. Inspired by 'Programming in Scala' book. See
-  * [[http://booksites.artima.com/programming_in_scala/examples/html/ch06.html original book example.]]
+  * [[http://booksites.artima.com/programming_in_scala/examples/html/ch06.html book example.]]
   */
 class Rational private(val n: Int, val d: Int) {
 
