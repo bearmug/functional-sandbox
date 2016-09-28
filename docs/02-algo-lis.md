@@ -18,18 +18,7 @@ Next level is to achieve proper time complexity over existing Scala APIs.
 There is no need to re-invent binary search wheel for this, 
 there should be built-in toolkit for such a purpose.
 
-## Narrow down solution scope
-Perfect scenario is when solution class has single available method or property.
-This property supposed to be used as main class action. Let`d do it like:
-```scala
-class LISubSequence(l: List[Int]) {
-  lazy val length = { ... } // no public logic outside this block
-} 
-```
-Value laziness let us postpone expensive calculation until the moment when 
-it is really required.
-
-## Data structures to iterate over solution search
+## Solution path and data structures
 Solution upper-level logic just taken from this [example]
 (http://www.geeksforgeeks.org/longest-monotonically-increasing-subsequence-size-n-log-n/).
 In short, this algorithm scans incoming elements one-by-one and:
@@ -42,6 +31,7 @@ In short, this algorithm scans incoming elements one-by-one and:
  increment it with this element. New subsequence with length N discards
  other subsequences with the same length
 
+### Classic approach with full subsequences tracking
 Solution for input ``4, 1, 3, 2, 5`` will look like:
 ```scala
 // put initial element
@@ -59,28 +49,75 @@ sequences have same length
 as duplicate for length 2 
 
 // 5
-((1), (1,2), (1,2,5)) //5 is the greatest across existing subsequences
+((1), (1,2), (1,2,5)) // 5 is the greatest across existing subsequences
+// therefore new subsequence generated from (1,2)
 ```
  
- But why track full subsequence, looks like an overkill. 
- it is enough to store each subsequence latest element and lengthm. 
+### Cleanup redundancy from subsequence description type 
+But why track full subsequence, looks like an overkill. 
+It is enough to store each subsequence latest element and it`s length only.
+Defining type shortcut for subsequence desciption:
+```scala
+type P = (Int, Int) // (length, max value) pair
+```
+Then solution for ``4, 1, 3, 2, 5`` to be represented as:
+```scala
+// 4
+((1,4))
+
+// 4, 1
+((1,1))
+
+// 4, 1, 3
+((2,3), (1,1))
+
+// 4, 1, 3, 2
+((2,2), (1,1))
+
+// 4, 1, 3, 2, 5
+((3,5), (2,2), (1,1))
+```
  
 ## Recursive subsequence scan
 The high-level idea is to iterate over input list one-by-one.
-This way we may accumulate output (let`s ignore question how for now)
-inside some of passed parameters. Sounds like tail-recursion opportunity!
+This way we may accumulate output inside some of recursively passed parameters. 
+Sounds like tail-recursion opportunity!
 ```scala
   @tailrec
-  def process(numbers: List[Int], seqs: TreeSet[Pair]): TreeSet[Pair] = numbers match {
-    case Nil => seqs
-    case x :: xs => process(xs, appendSeq(seqs, x))
-  }
+    def process(numbers: List[Int], seqs: TreeSet[P]): TreeSet[P] = numbers match {
+      case Nil => seqs
+      case x :: xs => process(xs, appendSeq(seqs, x))
+    }
 ```
 This is a classic approach: trim input ``numbers``, accumulate output inside
 ``seqs`` and pass ``seqs`` as a result once ``numbers`` got empty. 
 One unclear point is how we accumulate output inside ``appendSeq`` call. 
-Keep reading!
+
+Why result accumulator is ``TreeSet``? 
+First, longest subsequence could be taken from top of sorted set on 
+algorithm completion.
+Second, it is the way to convert O(n*n) time complexity to O(n*log(n)) 
+because linear search to be converted to binary search.
 
 ## Solution set increment
 ### With direct O(n*n) time complexity
 ### Improvement with O(n*log(n)) time complexity
+
+## Narrow down solution scope
+Perfect scenario is when solution class has single available method or property.
+This property supposed to be used as main class action. Let`d do it like:
+```scala
+class LISubSequence(l: List[Int]) {
+  lazy val length = {   
+  
+    ... // internal class defs here 
+  
+    process(l, TreeSet.empty(ord)) toList match {
+      case Nil => 0
+      case (len, max) :: ls => len
+    }
+  } // no public logic outside this block
+} 
+```
+Value laziness let us postpone expensive calculation until the moment when 
+it is really required.
