@@ -46,6 +46,32 @@ Those ones could be clean and self-explanatory:
   def <=(o: Rational): Boolean = this < o || this == o
 ```
 
+### Rationals comparison enhancement #1
+There are even more elegant way to define ``>, <, >= and <=`` operations for ``Rational`` class.
+It is enough to use trait ``Ordered`` like:
+```scala
+class Rational extends Ordered[Rational] { ... } // type parameter is mandatory
+```
+And then just define single abstract method from ``Ordered``:
+```scala
+  override def compare(that: Rational): Int =
+    this.n * that.d - that.n * this.d
+    // Ordering.Int.compare((this - that).n, 0) // or this way, outcome is the same
+```
+All the boilerplate code for comparisons could be purged from project now. 
+
+### Rationals comparison enhancement #2
+Moreover, it is possible to extend this trait for ``min/max``:
+```scala
+trait RichOrdered[T <: RichOrdered[T]] extends Ordered[T] {
+  def min(o: T): Ordered[T] = if (this <= o) this else o
+  def max(o: T): Ordered[T] = if (this >= o) this else o
+}
+```
+The drawback is that ``min/max`` return ``Ordered[T]``, not ``T``.
+But the great plus is that ``Rational`` class now have 6 methods almost for free!
+All we need is just implement ``compare`` one-liner!
+
 ## Rationals construction
 As a very first step, [GCD](https://en.wikipedia.org/wiki/Greatest_common_divisor) moved to companion object. 
 Our rational numbers have to be simplified with GCD, but if we`ll do this inside ``Rational`` 

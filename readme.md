@@ -5,15 +5,10 @@ Some Scala-related articles and around.
 ## Scala enhanced rational numbers 
 With great kickoff from 
 [Programming in Scala](https://www.amazon.com/Programming-Scala-Updated-2-12/dp/0981531687) 
-book has very useful chapter about 
-[rationals](http://booksites.artima.com/programming_in_scala/examples/html/ch06.html)
-In a nutshell, it is related to rational numbers calculations, unavailable
-with regular calculations.
-With little enhancements it is possible to have client code like: 
-```scala
-val im = (2, 3) * (1, 22) + (1, 2) / (1, 6)
-> im: org.bearmug.rationals.Rational = 100/33
-```
+about [rationals]
+(http://booksites.artima.com/programming_in_scala/examples/html/ch06.html)
+I`m really interested if it is possible improve given Scala solution. 
+And may we hope for similar elegance inside Java version for this code?
 
 Let`s look 
 [inside enhancements...](docs/01-enhanced-rationals.md)
