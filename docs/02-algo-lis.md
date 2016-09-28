@@ -9,7 +9,6 @@ task did push me towards investigations for canonical Scala implementation.
 Most of solutions I`ve found are simply written with imperative style.
 Either have inacceptable time complexity like O(n^2) or worse. 
 So, primary goal now is to see if pure functional solution could be short and efficient at the same time.
-And... is it much slower than vanilla Java version?
 
 ## Implementation idea
 The pre-conception is to create pure functional solution. 
@@ -105,7 +104,7 @@ So the goal could be decomposed to:
 - find subsequence with last number which is closest to our input
 - clone subsequence, increment it, get rid of subsequences with same length if required
 
-### Linear complexity
+### O(n * n) complexity
 First proposal could be like simple closest element lookup with ``find``.
 ```scala
   def appendSeq(seqs: TreeSet[SeqTop], x: Int): TreeSet[SeqTop] = {
@@ -118,7 +117,7 @@ First proposal could be like simple closest element lookup with ``find``.
 ```
 But it doesn`t work well, since it has iterator inside with linear lookup logic.
 Plus we have to think about elimination for subsequences with same length.
-Much better code snipped follows below:
+Much better it works with code snippet from below:
 ```scala
   def appendSeq(seqs: TreeSet[P], x: Int): TreeSet[P] = {
     val s = seqs.to((Integer.MAX_VALUE, x)).toList
@@ -158,7 +157,7 @@ remove redundant elements with ``lastOption`` optimized version.
 
 ## Narrow down solution scope
 Perfect scenario is when solution class has single available method or property.
-This property supposed to be used as main class action. Let`d do it like:
+This property supposed to be used as a main class feature. Let`d do it like:
 ```scala
 class LISubSequence(l: List[Int]) {
   lazy val length = { // delayed execution
@@ -174,3 +173,11 @@ class LISubSequence(l: List[Int]) {
 ```
 Value laziness let us postpone expensive calculation until the moment when 
 it is really required.
+
+## Summary
+So, in general Scala solution is really elegant and takes less than 40 LOC for class code itself.
+It is possible shorten it even more, but then code readability may really suffer.
+You may review final solution [here]
+(../src/main/scala/org/bearmug/algo/LISubSequence.scala#L11) 
+and see some tests for it under [related suite]
+(../src/test/scala/org/bearmug/algo/LISubSequenceSuite.scala) .
