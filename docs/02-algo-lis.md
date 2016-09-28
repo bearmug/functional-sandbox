@@ -15,7 +15,7 @@ And... is it much slower than vanilla Java version?
 The pre-conception is to create pure functional solution. 
 Saying no to variables, functions with side-effects, imperative loops,  etc..
 Next level is to achieve proper time complexity over existing Scala APIs.
-There is no need to re-invent binary search wheel for this, 
+No need to re-invent binary search wheel for this, 
 there should be built-in toolkit for such a purpose.
 
 ## Solution path and data structures
@@ -84,31 +84,84 @@ This way we may accumulate output inside some of recursively passed parameters.
 Sounds like tail-recursion opportunity!
 ```scala
   @tailrec
-    def process(numbers: List[Int], seqs: TreeSet[P]): TreeSet[P] = numbers match {
-      case Nil => seqs
-      case x :: xs => process(xs, appendSeq(seqs, x))
-    }
+  def process(numbers: List[Int], seqs: TreeSet[P]): TreeSet[P] = numbers match {
+    case Nil => seqs
+    case x :: xs => process(xs, appendSeq(seqs, x))
+  }
 ```
 This is a classic approach: trim input ``numbers``, accumulate output inside
 ``seqs`` and pass ``seqs`` as a result once ``numbers`` got empty. 
 One unclear point is how we accumulate output inside ``appendSeq`` call. 
 
-Why result accumulator is ``TreeSet``? 
-First, longest subsequence could be taken from top of sorted set on 
+Why result accumulator is a ``TreeSet``? 
+First, longest subsequence could be taken by O(1) from top of sorted set on 
 algorithm completion.
-Second, it is the way to convert O(n*n) time complexity to O(n*log(n)) 
+Second, it is the way to convert O(n * n) time complexity to O(n * log(n)) 
 because linear search to be converted to binary search.
 
-## Solution set increment
-### With direct O(n*n) time complexity
+## Specific item processing
+Now we need implement ``appendSeq`` to put next input element to the proper subsequence.
+So the goal could be decomposed to:
+- find subsequence with last number which is closest to our input
+- clone subsequence, increment it, get rid of subsequences with same length if required
+
+### Linear complexity
+First proposal could be like simple closest element lookup with ``find``.
+```scala
+  def appendSeq(seqs: TreeSet[SeqTop], x: Int): TreeSet[SeqTop] = {
+    val s = seqs.find((t: SeqTop) => t._2 < x)
+    s match {
+      case None => seqs + ((1, x))
+      case Some(e) => seqs - e + ((e._1 + 1, x))
+    }
+  }
+```
+But it doesn`t work well, since it has iterator inside with linear lookup logic.
+Plus we have to think about elimination for subsequences with same length.
+Much better code snipped follows below:
+```scala
+  def appendSeq(seqs: TreeSet[P], x: Int): TreeSet[P] = {
+    val s = seqs.to((Integer.MAX_VALUE, x)).toList
+    s match {
+      case Nil => seqs.headOption match {
+        case None => seqs + ((1, x))
+        case Some(h) => seqs + ((h._1 + 1, x))
+      }
+      case e => seqs - e.last + ((e.last._1, x))
+    }
+  }
+```
+It is optimized with lookup over ``to`` call.
+But still we do linear [stuff]
+(https://github.com/scala/scala/blob/v2.10.3/src/library/scala/collection/LinearSeqOptimized.scala#L134) 
+while searching for subsequence with same length to eliminate.
+
 ### Improvement with O(n*log(n)) time complexity
+Final subsequence lookup/replacement version provided into this section.
+Now we using search with ``to`` call and at the same time we 
+remove redundant elements with ``lastOption`` optimized version.
+```scala
+  def appendSeq(seqs: TreeSet[P], x: Int): TreeSet[P] = {
+    val s = seqs to((Integer.MAX_VALUE, x))
+    s match {
+      case e if e.isEmpty => seqs headOption match {
+        case None => seqs + ((1, x))
+        case Some((hl, _)) => seqs + ((hl + 1, x))
+      }
+      case e => e.lastOption match {
+        case None => seqs + ((1, x))
+        case Some((ll, lm)) => seqs - ((ll, lm)) + ((ll, x))
+      }
+    }
+  }
+```
 
 ## Narrow down solution scope
 Perfect scenario is when solution class has single available method or property.
 This property supposed to be used as main class action. Let`d do it like:
 ```scala
 class LISubSequence(l: List[Int]) {
-  lazy val length = {   
+  lazy val length = { // delayed execution
   
     ... // internal class defs here 
   
