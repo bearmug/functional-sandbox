@@ -32,4 +32,4 @@ Let`s see how much fun could be derived from financial Scala application develop
 Assuming to achieve it step-by-step, with small increments.
 Side idea is to track progress over ticketing system and estimate efforts with number of Pomodoro's spent.
 
-[Link to presumed articles series](docs/03-fun-fin-collection.md)
+[Link to presumed articles series](https://github.com/bearmug/fun-fin)
