@@ -32,8 +32,7 @@ class LISubSequence(l: List[Int]) {
           case None => seqs + ((1, x))
           case Some((hl, _)) => seqs + ((hl + 1, x))
         }
-        case e => e.lastOption match {
-          case None => seqs + ((1, x)) // unreachable case
+        case e => (e.lastOption: @unchecked) match {
           case Some((ll, lm)) => seqs - ((ll, lm)) + ((ll, x))
         }
       }
