@@ -28,4 +28,17 @@ class ExerciseSuite extends FunSuite {
       assert(Exercise.fuse(a, b) == res)
     }
   }
+
+  List(
+    (List(1, 1, 1, 1, 0), (i: Int) => i > 0, false),
+    (List(1, 1, 1, 1, 1), (i: Int) => i > 0, true)
+  ).foreach { e =>
+    test(s"check API call for ${e._1} fused with ${e._2} is ${e._3}") {
+      assert(Exercise.checkApi(e._1)(e._2) == e._3)
+    }
+
+    test(s"check manual call for ${e._1} fused with ${e._2} is ${e._3}") {
+      assert(Exercise.check(e._1)(e._2) == e._3)
+    }
+  }
 }
